@@ -52,6 +52,25 @@ func main(){
 		// Defines the maximum time (in seconds) that the results of a preflight request (OPTIONS request) can be cached by the browser.
 		MaxAge:           300,
 	}))
+
+	//to hook up our handler_readiness to the main router
+	v1Router := chi.NewRouter()
+
+	//HandleFunc() gives output on all the request types(get,post,delete,etc) so we set it to Get only
+	// v1Router.HandleFunc("/ready", handlerReadiness) sets up a route that listens for HTTP requests at the path /ready.
+	// When a request is made to /ready, the handlerReadiness function will be called to handle the request.
+	v1Router.Get("/ready", handlerReadiness)
+
+
+	//error handler
+	v1Router.Get("/err" , handlerError)
+
+	//adding the main v1Router to the main router 
+// 	This line mounts the v1Router onto the main router at the path /v1.
+// This means that any routes defined in v1Router will be accessible under the /v1 path.
+	router.Mount("/v1",v1Router)
+
+
 	
 	//creating a server
 // 	This line declares a variable srv and initializes it with a pointer to a new http.Server struct.
