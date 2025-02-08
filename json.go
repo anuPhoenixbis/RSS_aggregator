@@ -12,7 +12,7 @@ func respondWithJSON(w http.ResponseWriter , code int , payload interface{}){//p
 	data , err := json.Marshal(payload)//It takes an input of type interface{} (which means it can accept any type) and converts it into a JSON-encoded byte slice.
 // checking for error while converting
 	if err!=nil{
-		log.Println("Failed to marshal JSON response: %v", payload)
+		log.Printf("Failed to marshal JSON response: %v", payload)
 		w.WriteHeader(500)//WriteHeader sends an HTTP response header with the provided status code.
 		return
 	}
