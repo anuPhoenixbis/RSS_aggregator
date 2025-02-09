@@ -11,6 +11,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type apiConfig struct{
+// The type of the DB field is *database.Queries, which is a pointer to a Queries struct defined in the database package.
+	DB *database.Queries
+}
+
 func main(){
 
 	err:= godotenv.Load(".env")
