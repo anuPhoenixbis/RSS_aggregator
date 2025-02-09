@@ -1,19 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/anuPhoenixbis/RSS_Agg/internal/database"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 type apiConfig struct{
 // The type of the DB field is *database.Queries, which is a pointer to a Queries struct defined in the database package.
-	DB *database.Queries
+	DB *database.Queries//holds the connection to the db
 }
 
 func main(){
@@ -24,11 +27,28 @@ func main(){
     }
 // 	The os.Getenv function retrieves the value of the environment variable named "PORT".
 // If the environment variable is not set, os.Getenv returns an empty string.
+
+//server connection
 	portString := os.Getenv("PORT")
 	//checking of the port
 	if portString == "" {
 		log.Fatal("Port is not found in the enviornment")
 	}
+
+	//db code goes here
+//db connection
+	dbURL := os.Getenv("DB_URL")
+	//checking of the port
+	if portString == "" {
+		log.Fatal("DB URL is not found in the enviornment")
+	}
+
+	//connecting the db and error handling
+	conn, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatal("Can't connect to db:", err)
+	}
+	defer conn.Close()
 
 	// An HTTP router is a component within a web application that determines which specific piece of code should
 	//  handle an incoming HTTP request based on the URL path
