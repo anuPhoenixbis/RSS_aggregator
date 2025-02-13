@@ -101,6 +101,16 @@ func main(){
 	
 	//handles the user creation from the db
 	v1Router.Post("/users" , apiCfg.handlerCreateUser) 
+
+	//handles the user getting from the db
+	// passing the getuserhandler in the middlewareAuth
+	v1Router.Get("/users" , apiCfg.middlewareAuth(apiCfg.handlerGetUser))//passing the middleware here for the error handling
+
+	//for the feed creation
+	v1Router.Post("/feeds" , apiCfg.middlewareAuth(apiCfg.handlerCreateFeed))//passing the middleware here for the error handling
+
+	//for the feed getting
+	v1Router.Get("/feeds" , apiCfg.handlerGetFeed)//passing the middleware here for the error handling
 	
 	//adding the main v1Router to the main router 
 	// 	This line mounts the v1Router onto the main router at the path /v1.
