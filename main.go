@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/anuPhoenixbis/RSS_Agg/internal/database"
 	"github.com/go-chi/chi"
@@ -21,7 +22,13 @@ type apiConfig struct{
 
 func main(){
 
-	err:= godotenv.Load(".env")
+	feed,err := urlToFeed("https://wagslane.dev/index.xml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(feed)
+
+	err = godotenv.Load(".env")
 	if err != nil {
         log.Fatal("Error loading .env file")
     }
@@ -55,6 +62,14 @@ func main(){
 	apiCfg := apiConfig{
 		DB:queries,
 	}
+
+	//starting the scraping
+	// StartScraping is a function that periodically scrapes RSS feeds from a database using a specified number of goroutines.
+	go StartScraping(
+		queries,
+		10,
+		time.Minute, 
+	)
 	
 	defer conn.Close()
 	// An HTTP router is a component within a web application that determines which specific piece of code should
@@ -112,6 +127,9 @@ func main(){
 	//for the feed getting
 	v1Router.Get("/feeds" , apiCfg.handlerGetFeed)//passing the middleware here for the error handling
 
+
+	//for the post getting
+	v1Router.Get("/posts" , apiCfg.middlewareAuth(apiCfg.handlerGetPostsForUser))//passing the middleware here for the error handling
 
 	//for feed follow
 	v1Router.Post("/feed_follows" , apiCfg.middlewareAuth(apiCfg.handlerCreateFeedFollow))//passing the middleware here for the error handling

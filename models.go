@@ -6,6 +6,7 @@ import (
 	"github.com/anuPhoenixbis/RSS_Agg/internal/database"
 	"github.com/google/uuid"
 )
+
 // Each field has a corresponding JSON tag (e.g., json:"id") that specifies the key to use when the struct is serialized to JSON.
 type User struct{
 	ID 			uuid.UUID `json"id"`
@@ -74,4 +75,40 @@ func databaseFeedFollowsToFeedFollows(dbFeedFollows []database.FeedFollow) []Fee
 		feedsFollows = append(feedsFollows,databaseFeedFollowToFeedFollow(dbFeedFollow))//appending the converted User to the slice of User
 	}
 	return feedsFollows
+}
+
+type Post struct{
+	ID          uuid.UUID `json"id"`
+	CreatedAt   time.Time `json"created_at"`
+	UpdatedAt   time.Time `json"updated_at"`
+	Title       string `json"title"`
+	Description *string `json"description"`
+	PublishedAt time.Time `json"published_at"`
+	Url         string `json"url"`
+	FeedID      uuid.UUID `json"feed_id"`
+}
+//conversion from internal/database.Post to Post
+func databasePostToPost(dbPost database.Post) Post {
+	var description *string
+	if dbPost.Description.Valid{
+		description = &dbPost.Description.String // passing the address string to the description
+	}
+	return Post{
+		ID : dbPost.ID,
+		CreatedAt: dbPost.CreatedAt,
+		UpdatedAt: dbPost.UpdatedAt,
+		Title : dbPost.Title,
+		Description : description,
+		PublishedAt : dbPost.PublishedAt,
+		Url : dbPost.Url,
+		FeedID : dbPost.FeedID,
+	}
+}
+
+func databasePostsToPosts(dbPosts []database.Post) []Post {
+	posts := []Post{}
+	for _,dbPost := range dbPosts{
+		posts = append(posts,databasePostToPost(dbPost))
+	}
+	return posts
 }
