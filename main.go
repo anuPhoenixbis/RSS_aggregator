@@ -111,6 +111,17 @@ func main(){
 
 	//for the feed getting
 	v1Router.Get("/feeds" , apiCfg.handlerGetFeed)//passing the middleware here for the error handling
+
+
+	//for feed follow
+	v1Router.Post("/feed_follows" , apiCfg.middlewareAuth(apiCfg.handlerCreateFeedFollow))//passing the middleware here for the error handling
+
+
+	//for feed follow getting
+	v1Router.Get("/feed_follows" , apiCfg.middlewareAuth(apiCfg.handlerGetFeedFollow))//passing the middleware here for the error handling
+
+	//for feed follow delete
+	v1Router.Delete("/feed_follows/{feedFollowID}" , apiCfg.middlewareAuth(apiCfg.handlerDeleteFeedFollow))//passing the middleware here for the error handling
 	
 	//adding the main v1Router to the main router 
 	// 	This line mounts the v1Router onto the main router at the path /v1.

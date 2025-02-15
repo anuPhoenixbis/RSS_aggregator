@@ -22,6 +22,13 @@ type Feed struct{
 	Url       string `json"url"`
 	UserID    uuid.UUID `json"user_id"`
 }
+type FeedFollow struct{
+	ID        uuid.UUID `json"id"`
+	CreatedAt time.Time `json"created_at"`
+	UpdatedAt time.Time `json"updated_at"`
+	UserID    uuid.UUID `json"user_id"`
+	FeedID    uuid.UUID `json"feed_id"`
+}
 
 // This function converts a database.User struct to a User struct.
 func databaseUserToUser(dbUser database.User) User {
@@ -50,4 +57,21 @@ func databaseFeedsToFeeds(dbFeed []database.Feed) []Feed {
 		feeds = append(feeds,databaseFeedToFeed(dbFeed))//appending the converted User to the slice of User
 	}
 	return feeds
+}
+func databaseFeedFollowToFeedFollow(dbFeedFollow database.FeedFollow) FeedFollow {
+	return FeedFollow{
+		ID : dbFeedFollow.ID,
+		CreatedAt: dbFeedFollow.CreatedAt,
+		UpdatedAt: dbFeedFollow.UpdatedAt,
+		UserID : dbFeedFollow.UserID,
+		FeedID : dbFeedFollow.FeedID,
+	}
+}
+
+func databaseFeedFollowsToFeedFollows(dbFeedFollows []database.FeedFollow) []FeedFollow {
+	feedsFollows := []FeedFollow{}//creating an empty slice of Feed
+	for _,dbFeedFollow := range dbFeedFollows{//iterating over the slice of database.User
+		feedsFollows = append(feedsFollows,databaseFeedFollowToFeedFollow(dbFeedFollow))//appending the converted User to the slice of User
+	}
+	return feedsFollows
 }
