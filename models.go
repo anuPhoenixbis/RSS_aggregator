@@ -9,26 +9,26 @@ import (
 
 // Each field has a corresponding JSON tag (e.g., json:"id") that specifies the key to use when the struct is serialized to JSON.
 type User struct{
-	ID 			uuid.UUID `json"id"`
+	ID 			uuid.UUID `json:"id"`
 	CreatedAt	time.Time `json:"created_at"`
 	UpdatedAt	time.Time `json:"updated_at"`
 	Name		string	  `json:"name"`
 	APIKey      string	  `json:"api_key"`
 }
 type Feed struct{
-	ID        uuid.UUID `json"id"`
-	CreatedAt time.Time `json"created_at"`
-	UpdatedAt time.Time `json"updated_at"`
-	Name      string `json"name"`
-	Url       string `json"url"`
-	UserID    uuid.UUID `json"user_id"`
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Name      string `json:"name"`
+	Url       string `json:"url"`
+	UserID    uuid.UUID `json:"user_id"`
 }
 type FeedFollow struct{
-	ID        uuid.UUID `json"id"`
-	CreatedAt time.Time `json"created_at"`
-	UpdatedAt time.Time `json"updated_at"`
-	UserID    uuid.UUID `json"user_id"`
-	FeedID    uuid.UUID `json"feed_id"`
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	UserID    uuid.UUID `json:"user_id"`
+	FeedID    uuid.UUID `json:"feed_id"`
 }
 
 // This function converts a database.User struct to a User struct.
@@ -78,14 +78,14 @@ func databaseFeedFollowsToFeedFollows(dbFeedFollows []database.FeedFollow) []Fee
 }
 
 type Post struct{
-	ID          uuid.UUID `json"id"`
-	CreatedAt   time.Time `json"created_at"`
-	UpdatedAt   time.Time `json"updated_at"`
-	Title       string `json"title"`
-	Description *string `json"description"`
-	PublishedAt time.Time `json"published_at"`
-	Url         string `json"url"`
-	FeedID      uuid.UUID `json"feed_id"`
+	ID          uuid.UUID `json:"id"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	Title       string `json:"title"`
+	Description *string `json:"description"`
+	PublishedAt time.Time `json:"published_at"`
+	Url         string `json:"url"`
+	FeedID      uuid.UUID `json:"feed_id"`
 }
 //conversion from internal/database.Post to Post
 func databasePostToPost(dbPost database.Post) Post {

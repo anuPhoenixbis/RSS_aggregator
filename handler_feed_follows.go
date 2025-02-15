@@ -13,7 +13,7 @@ import (
 
 func (apiConfig *apiConfig)handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request , user database.User) {
     type parameter struct{
-		feedID uuid.UUID `json:"feed_id"`
+		FeedID uuid.UUID `json:"feed_id"`
 	}
 	decoder := json.NewDecoder(r.Body)
 	
@@ -30,7 +30,7 @@ func (apiConfig *apiConfig)handlerCreateFeedFollow(w http.ResponseWriter, r *htt
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		UserID: user.ID,
-		FeedID: params.feedID,
+		FeedID: params.FeedID,
 	})
 	if err!=nil{
 		respondWithError(w, 400 ,fmt.Sprintf("Couldn't create feed follow: %v", err))
